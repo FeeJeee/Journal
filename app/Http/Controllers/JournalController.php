@@ -41,7 +41,7 @@ class JournalController extends Controller
      */
     public function show(Group $group)
     {
-        $subjects = Subject::all();
+
 
         echo 'hhhhhhh';
 
