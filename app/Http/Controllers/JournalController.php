@@ -43,6 +43,7 @@ class JournalController extends Controller
     {
         $subjects = Subject::all();
 
+//        HHHHHHHHHHHHHHHH
 
         dump(average($subjects->find(1)->users->where('group_id', $group->id))) ;
         dd($subjects->find(1)->users()->where('group_id', $group->id));
