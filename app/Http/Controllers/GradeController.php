@@ -6,18 +6,9 @@ use App\Http\Requests\Grade\StoreGradeRequest;
 use App\Http\Requests\Grade\UpdateGradeRequest;
 use App\Models\Subject;
 use App\Models\User;
-use Illuminate\Http\Request;
 
 class GradeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
     /**
      * Show the form for creating a new resource.
      */
@@ -39,21 +30,13 @@ class GradeController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(User $user, Subject $subject)
     {
         $subject = $user->subjects()->find($subject->id);
 
-        return view('grades.edit', compact('user', 'subject'));
+        return view('grades.edit', compact('user',  'subject'));
     }
 
     /**
@@ -61,9 +44,7 @@ class GradeController extends Controller
      */
     public function update(UpdateGradeRequest $request, User $user, Subject $subject)
     {
-        $user->subjects()->detach($subject->id);
-
-        $user->subjects()->attach($subject->id, $request->validated());
+        $user->subjects()->updateExistingPivot($subject->id, $request->validated());
 
         return redirect()->route('users.show', $user);
     }

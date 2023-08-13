@@ -15,34 +15,22 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
-
-        Group::factory()
-            ->count(3)
-            ->has(User::factory()->count(5), 'users')
+        Group::factory(3)
+            ->has(User::factory(10))
             ->create();
 
-//        dd(rand(0,19));
+        $groups = Group::all();
 
-        $users = User::all();
+        $subjects = Subject::factory(5)->create();
 
-//        Subject::factory()
-//            ->count(5)
-//            ->hasAttached($users, ['grade' => rand(2,5)])
-//            ->create();
-
-        foreach ($users as $user)
+        foreach ($groups as $group)
         {
-            for($x=0; $x < 3; $x++)
+            foreach ($group->users as $user)
             {
-                Subject::factory()
-                    ->hasAttached($user, ['grade' => rand(2, 5)])
-                    ->create();
+                foreach ($subjects as $subject)
+                {
+                    $user->subjects()->attach($subject->id, ['grade' => rand(2 ,5)]);
+                }
             }
         }
     }

@@ -2,7 +2,7 @@
 
 @section('content')
     @include('users.form', [
-        'action' => route('users.update', $user->id),
+        'action' => route('users.update', compact('user')),
         'method' => 'patch',
     ])
 @endsection

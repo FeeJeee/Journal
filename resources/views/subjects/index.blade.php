@@ -1,44 +1,56 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="d-flex align-items-center justify-content-center" >
-        <table class="table text-center" style="max-width: 30rem;">
-            <thead>
-            <tr>
-                <th scope="col">id</th>
-                <th scope="col">Title</th>
-                <th scope="col"></th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach($subjects as $subject)
-                <tr>
-                    <th scope="row">{{ $subject->id }}</th>
-                    <td><a href="{{ route('subjects.show',$subject->id) }}">{{ $subject->title }}</td>
-                    <td>
-                        <form action="{{ route('subjects.destroy', $subject->id) }}" method="post">
-                            @csrf
-                            @method('delete')
-                            <button type="submit" class="btn btn-danger">
-                                DELETE
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-            @endforeach
-            </tbody>
-        </table>
-    </div>
+    @include('includes.filter',[
+        'action' => route('subjects.index'),
+        'method' => 'get',
+    ])
 
-    <div class="text-center">
-        <div class="d-grid gap-2 ">
-            <a class="" aria-current="page" href="{{ route('subjects.create') }}">
-                New Subject
-            </a>
-        </div>
-
-        <div class="m-4">
-            {{ $subjects->links() }}
+    <div class="d-flex justify-content-center">
+        <div class="card text-center" style="width: 40rem; height: 33rem;">
+            <div class="card-header">
+                <div class="d-flex justify-content-between my-1">
+                    <h5 class="ms-5 pt-1 ">Subjects</h5>
+                    <a class=" btn btn-primary me-5" aria-current="page" href="{{ route('subjects.create') }}">New subject</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-center" >
+                    <table class="table text-center" style="max-width: 30rem;">
+                        <thead>
+                        <tr>
+                            <th scope="col">id</th>
+                            <th scope="col">Title</th>
+                            <th scope="col"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($subjects as $subject)
+                            <tr>
+                                <th scope="row">{{ $subject->id }}</th>
+                                <td><a class="link-underline-light" href="{{ route('subjects.show',$subject->id) }}">{{ $subject->title }}</td>
+                                <td>
+                                    <form action="{{ route('subjects.destroy', $subject->id) }}" method="post">
+                                        @csrf
+                                        @method('delete')
+                                        <button type="submit" class="btn btn-danger btn-sm">
+                                            DELETE
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card-footer text-muted" style="height: 4rem;">
+                <div class="d-flex justify-content-center pt-1">
+                    <div class="d-flex flex-column">
+                        {{ $subjects->links() }}
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 @endsection

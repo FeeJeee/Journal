@@ -1,5 +1,6 @@
-<div class="fixed-bottom text-center" >
-    <hr>
-    <h1>footer</h1>
-</div>
+<footer class="mb-2 py-2 border-top">
+    <div class="d-flex justify-content-center">
+        <h1>footer</h1>
+    </div>
+</footer>
 

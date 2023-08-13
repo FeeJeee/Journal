@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\SubjectController;
@@ -17,10 +18,29 @@ use App\Http\Controllers\JournalController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::resource('groups', GroupController::class);
-Route::resource('subjects', SubjectController::class);
-Route::resource('users', UserController::class);
-Route::resource('users.subjects', GradeController::class);
 
-Route::get('journals/{group}', [JournalController::class, 'show'])->name('journals.show');
-//Route::resource('journals.groups', JournalController::class)->shallow();
+Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::resource('groups', GroupController::class);
+    Route::resource('subjects', SubjectController::class);
+    Route::resource('users', UserController::class);
+    Route::resource('users.subjects', GradeController::class);
+
+    Route::get('journals/{group}', [JournalController::class, 'show'])->name('journals.show');
+});
+
+
+
+
+require __DIR__.'/auth.php';

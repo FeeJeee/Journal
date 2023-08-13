@@ -6,7 +6,6 @@ use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Models\User;
 use App\Models\Group;
-use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -15,7 +14,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::paginate(5);
+        $users = User::filter()->paginate(5)->withQueryString();
 
         return view('users.index', compact('users'));
     }
@@ -45,7 +44,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        $subjects = $user->subjects;
+        $subjects = $user->subjects()->paginate(5);
 
         return view('users.show', compact('user', 'subjects'));
     }
@@ -75,15 +74,10 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        foreach ($user->subjects as $subject)
-        {
-            $user->subjects()->detach($subject->id);
-        };
+        $user->subjects()->detach();
 
         $user->delete();
 
-//        return redirect()->route('users.index');
-
-        return redirect()->back();
+        return redirect()->route('users.index');
     }
 }

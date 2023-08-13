@@ -23,8 +23,16 @@ class UpdateUserRequest extends FormRequest
     {
         return [
             'name' => 'required|max:50',
-            'group_id' => 'required|integer',
-            'birthdate' => 'required',
+            'surname' => 'required|max:50',
+            'patronymic' => 'required|max:50',
+            'password' => 'required',
+            'email' => 'required',
+            'group_id' => 'required',
+            'birthdate' => 'required|date',
+            'address'    => 'required',
+            'address.city'  => 'required',
+            'address.street'  => 'required',
+            'address.building'  => 'required|numeric',
         ];
     }
 }

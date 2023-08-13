@@ -5,13 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Subject\StoreSubjectRequest;
 use App\Http\Requests\Subject\UpdateSubjectRequest;
 use App\Models\Subject;
-use Illuminate\Http\Request;
 
 class SubjectController extends Controller
 {
     public function index()
     {
-        $subjects = Subject::paginate(5);
+        $subjects = Subject::filter()->paginate(5)->withQueryString();
 
         return view('subjects.index', compact('subjects'));
     }
@@ -47,13 +46,10 @@ class SubjectController extends Controller
 
     public function destroy(Subject $subject)
     {
-        foreach ($subject->users as $user)
-        {
-            $subject->users()->detach($user->id);
-        }
+        $subject->users()->detach();
 
         $subject->delete();
 
-        return redirect()->back();
+        return redirect()->route('subjects.index');
     }
 }

@@ -23,8 +23,16 @@ class StoreUserRequest extends FormRequest
     {
         return [
             'name' => 'required|max:50',
+            'surname' => 'required|max:50',
+            'patronymic' => 'required|max:50',
+            'password' => 'required',
+            'email' => 'required|unique:users',
             'group_id' => 'required',
-            'birthdate' => 'required',
+            'birthdate' => 'required|date',
+            'address'    => 'required',
+            'address.city'  => 'required',
+            'address.street'  => 'required',
+            'address.building'  => 'required|numeric',
         ];
     }
 }

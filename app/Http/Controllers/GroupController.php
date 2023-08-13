@@ -5,14 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Group\StoreGroupRequest;
 use App\Http\Requests\Group\UpdateGroupRequest;
 use App\Models\Group;
-use App\Models\User;
-use Illuminate\Http\Request;
+
 
 class GroupController extends Controller
 {
     public function index()
     {
-        $groups = Group::paginate(5);
+        $groups = Group::filter()->paginate(5)->withQueryString();
 
         return view('groups.index', compact('groups'));
     }
@@ -36,7 +35,6 @@ class GroupController extends Controller
 
     public function edit(Group $group)
     {
-//        dd($group);
         return view('groups.edit', compact('group'));
     }
 
@@ -51,16 +49,13 @@ class GroupController extends Controller
     {
         foreach ($group->users as $user)
         {
-            foreach ($user->subjects as $subject)
-            {
-                $user->subjects()->detach($subject->id);
-            };
+            $user->subjects()->detach();
 
             $user->delete();
-        };
+        }
 
         $group->delete();
 
-        return redirect()->back();
+        return redirect()->route('groups.index');
     }
 }

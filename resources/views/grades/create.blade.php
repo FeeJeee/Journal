@@ -2,8 +2,7 @@
 
 @section('content')
     @include('grades.form', [
-        'action' => route('users.subjects.store', compact('user')),
+        'action' => route('users.subjects.store', $user),
         'method' => 'post'
     ])
 @endsection
-

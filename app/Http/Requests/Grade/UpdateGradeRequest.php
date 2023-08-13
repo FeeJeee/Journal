@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Grade;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateGradeRequest extends FormRequest
 {
@@ -24,7 +25,7 @@ class UpdateGradeRequest extends FormRequest
         return [
             'user_id' => 'required',
             'subject_id' => 'required',
-            'grade' => 'required|lte:5|gte:2|numeric'
+            'grade' => 'required|lte:5|gte:2|numeric',
         ];
     }
 }
