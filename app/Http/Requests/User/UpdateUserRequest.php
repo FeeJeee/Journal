@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\User;
 
+use App\Enums\UserRole;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
 
 class UpdateUserRequest extends FormRequest
 {
@@ -25,7 +27,7 @@ class UpdateUserRequest extends FormRequest
             'name' => 'required|max:50',
             'surname' => 'required|max:50',
             'patronymic' => 'required|max:50',
-            'password' => 'required',
+            'password' => 'required|confirmed',
             'email' => 'required',
             'group_id' => 'required',
             'birthdate' => 'required|date',
@@ -33,6 +35,7 @@ class UpdateUserRequest extends FormRequest
             'address.city'  => 'required',
             'address.street'  => 'required',
             'address.building'  => 'required|numeric',
+            'role' => [new Enum(UserRole::class)],
         ];
     }
 }

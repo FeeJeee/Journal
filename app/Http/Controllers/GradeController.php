@@ -6,6 +6,7 @@ use App\Http\Requests\Grade\StoreGradeRequest;
 use App\Http\Requests\Grade\UpdateGradeRequest;
 use App\Models\Subject;
 use App\Models\User;
+use Illuminate\Support\Facades\Gate;
 
 class GradeController extends Controller
 {
@@ -14,6 +15,8 @@ class GradeController extends Controller
      */
     public function create(User $user)
     {
+        Gate::authorize('edit-create-grade', $user);
+
         $subjects = Subject::all();
 
         return view('grades.create', compact('user', 'subjects'));
@@ -24,6 +27,8 @@ class GradeController extends Controller
      */
     public function store(StoreGradeRequest $request, User $user)
     {
+        Gate::authorize('store-update-delete-grade', $user);
+
         $user->subjects()->attach($request->validated()['subject_id'], $request->validated());
 
         return redirect()->route('users.show', $user);
@@ -34,6 +39,8 @@ class GradeController extends Controller
      */
     public function edit(User $user, Subject $subject)
     {
+        Gate::authorize('edit-create-grade', $user);
+
         $subject = $user->subjects()->find($subject->id);
 
         return view('grades.edit', compact('user',  'subject'));
@@ -44,6 +51,8 @@ class GradeController extends Controller
      */
     public function update(UpdateGradeRequest $request, User $user, Subject $subject)
     {
+        Gate::authorize('store-update-delete-grade', $user);
+
         $user->subjects()->updateExistingPivot($subject->id, $request->validated());
 
         return redirect()->route('users.show', $user);
@@ -54,6 +63,8 @@ class GradeController extends Controller
      */
     public function destroy(User $user, Subject $subject)
     {
+        Gate::authorize('store-update-delete-grade', $user);
+
         $user->subjects()->detach($subject->id);
 
         return redirect()->back();

@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -9,17 +10,18 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class PasswordMail extends Mailable
+class GradesMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $password;
+    public User $user;
+
     /**
      * Create a new message instance.
      */
-    public function __construct($password)
+    public function __construct(User $user)
     {
-        $this->password=$password;
+        $this->user = $user;
     }
 
     /**
@@ -28,7 +30,7 @@ class PasswordMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Password Mail',
+            subject: 'Grades Mail',
         );
     }
 
@@ -38,7 +40,7 @@ class PasswordMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mails.password',
+            view: 'mails.grades',
         );
     }
 

@@ -26,6 +26,7 @@ class ProfileUpdateRequest extends FormRequest
             'address.street'  => 'required',
             'address.building'  => 'required|numeric',
             'email' => ['email', 'max:255', Rule::unique(User::class)->ignore($this->user()->id)],
+            'avatar' => 'file|image',
         ];
     }
 }

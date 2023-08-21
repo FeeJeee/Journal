@@ -6,8 +6,12 @@
             <div class="d-flex justify-content-between my-1">
                 <h5 class="ms-5 me-2 pt-1 ">{{ $user->fullName}}</h5>
                 <div class="d-flex">
+                    @can('store-update-delete-grade', $user)
                     <a class=" btn btn-primary me-3" href="{{ route('users.subjects.create', $user) }}" role="button">Add subject</a>
-                    <a class=" btn btn-primary me-5" href="{{ route('users.edit', $user->id) }}" role="button">Update user</a>
+                    @endcan
+                    @can('edit', $user)
+                        <a class=" btn btn-primary me-5" href="{{ route('users.edit', $user->id) }}" role="button">Update user</a>
+                    @endcan
                 </div>
             </div>
         </div>
@@ -27,20 +31,24 @@
                     @foreach($subjects as $subject)
                         <tr>
                             <th scope="row">{{ $subject->id }}</th>
-                            <td><a class="link-underline-light" href="{{ route('subjects.show',$subject->id) }}">{{ $subject->title }}</a></td>
+                            <td>{{ $subject->title }}</td>
                             <td>{{ $subject->pivot->grade }}</td>
                             <td>
                                 <div class="">
-                                    <a class="btn btn-primary btn-sm" href="{{ route('users.subjects.edit',compact('user', 'subject')) }}" role="button">Update</a>
+                                    @can('store-update-delete-grade', $user)
+                                        <a class="btn btn-primary btn-sm" href="{{ route('users.subjects.edit',compact('user', 'subject')) }}" role="button">Update</a>
+                                    @endcan
                                 </div>
                             </td>
                             <td>
                                 <form action="{{ route('users.subjects.destroy', compact('user', 'subject')) }}" method="post">
                                     @csrf
                                     @method('delete')
-                                    <button type="submit" class="btn btn-danger btn-sm">
-                                        DELETE
-                                    </button>
+                                    @can('store-update-delete-grade', $user)
+                                        <button type="submit" class="btn btn-danger btn-sm">
+                                            DELETE
+                                        </button>
+                                    @endcan
                                 </form>
                             </td>
                         </tr>

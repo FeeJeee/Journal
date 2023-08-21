@@ -8,7 +8,7 @@
                 <div class="d-flex flex-column">
                     <div class="">
                         <label for="title" class="form-label">Group title</label>
-                        <input type="text" name="title" id="title" class="form-control " placeholder="{{ isset($group) ? $group->title : '' }}">
+                        <input type="text" name="title" id="title" class="form-control " value="{{ isset($group) ? $group->title : '' }}">
                     </div>
                     <div class="d-grid gap-2">
                         <button type="submit" class="btn btn-primary d-grid gap-2 mt-4">

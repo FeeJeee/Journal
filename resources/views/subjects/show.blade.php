@@ -6,11 +6,11 @@
             <div class="card-header bg-transparent border-bottom text-center"><h5>{{ $subject->title }}</h5></div>
             <div class="card-body">
                 <div class="d-flex flex-column text-center">
-                    <div class="">
+                    @can('update', $subject)
                         <div class="">
                             <a class="d-grid gap-2 btn btn-primary mb-2" href="{{ route('subjects.edit', $subject->id) }}">Update</a>
                         </div>
-                    </div>
+                    @endcan
                 </div>
             </div>
         </div>

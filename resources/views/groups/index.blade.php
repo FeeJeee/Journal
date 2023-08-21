@@ -7,11 +7,13 @@
     ])
 
     <div class="d-flex justify-content-center">
-        <div class="card text-center" style="width: 40rem; height: 33rem;">
-            <div class="card-header">
+        <div class="card text-center" style="width: 40rem; min-height: 34rem;">
+            <div class="card-header" style="height: 4rem">
                 <div class="d-flex justify-content-between my-1">
                     <h5 class="ms-5 pt-1 ">Groups</h5>
-                    <a class=" btn btn-primary me-5" aria-current="page" href="{{ route('groups.create') }}">New group</a>
+                    @can('create', App\Models\Group::class)
+                        <a class=" btn btn-primary me-5" aria-current="page" href="{{ route('groups.create') }}">New group</a>
+                    @endcan
                 </div>
             </div>
             <div class="card-body">
@@ -30,13 +32,15 @@
                                 <th scope="row">{{ $group->id }}</th>
                                 <td><a class="link-underline-light" href="{{ route('groups.show',$group->id) }}">{{ $group->title }}</td>
                                 <td>
-                                    <form action="{{ route('groups.destroy', $group->id) }}" method="post">
-                                        @csrf
-                                        @method('delete')
-                                        <button type="submit" class="btn btn-danger btn-sm">
-                                            DELETE
-                                        </button>
-                                    </form>
+                                    @can('delete', $group)
+                                        <form action="{{ route('groups.destroy', $group->id) }}" method="post">
+                                            @csrf
+                                            @method('delete')
+                                            <button type="submit" class="btn btn-danger btn-sm">
+                                                DELETE
+                                            </button>
+                                        </form>
+                                    @endcan
                                 </td>
                             </tr>
                         @endforeach

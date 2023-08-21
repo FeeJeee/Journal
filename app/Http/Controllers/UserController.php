@@ -2,19 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\UserRole;
+use App\Events\UserCreated;
 use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Models\User;
 use App\Models\Group;
+use App\Services\FileService;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Artisan;
 
 class UserController extends Controller
 {
+    public function __construct(
+        protected FileService $fileService,
+    ) {}
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $users = User::filter()->paginate(5)->withQueryString();
+        $users = User::withTrashed(request()->user()->isAdmin)->filter()->paginate(5)->withQueryString();
 
         return view('users.index', compact('users'));
     }
@@ -24,9 +33,13 @@ class UserController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', User::class);
+
         $groups = Group::all();
 
-        return view('users.create', compact('groups'));
+        $user_roles = UserRole::cases();
+
+        return view('users.create', compact('groups', 'user_roles'));
     }
 
     /**
@@ -34,7 +47,11 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        User::create($request->validated());
+        $this->authorize('store', [User::class, $request->validated()]);
+
+        $user = User::create($request->validated());
+
+        event(new UserCreated($user, $request->validated('password')));
 
         return redirect()->route('users.create');
     }
@@ -54,9 +71,13 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        $this->authorize('edit', $user);
+
         $groups = Group::all();
 
-        return view('users.edit', compact('user', 'groups'));
+        $user_roles = UserRole::cases();
+
+        return view('users.edit', compact('user', 'groups', 'user_roles'));
     }
 
     /**
@@ -64,6 +85,8 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
+        $this->authorize('update', [$user, $request->validated()]);
+
         $user->update($request->validated());
 
         return redirect()->route('users.show', $user);
@@ -74,10 +97,34 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        $user->subjects()->detach();
+        $this->authorize('delete', $user);
 
         $user->delete();
 
-        return redirect()->route('users.index');
+        return back();
+    }
+
+    public function toPdf(User $user)
+    {
+        return $this->fileService->userToPdf($user);
+    }
+
+    public function restore(User $user)
+    {
+        if ($user->trashed())
+        {
+            $user->restore();
+        }
+
+        return back();
+    }
+
+    public function forceDelete(User $user)
+    {
+        $user->subjects()->detach();
+
+        $user->forceDelete();
+
+        return back();
     }
 }

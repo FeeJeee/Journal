@@ -25,7 +25,7 @@
                     @endif
                     <div class="">
                         <label for="title" class="form-label">Grade </label>
-                        <input type=""  name="grade" id="grade" class="form-control" placeholder="{{ isset($current_subject) ?  $current_subject->pivot->grade : '' }}">
+                        <input type=""  name="grade" id="grade" class="form-control" value="{{ isset($current_subject) ?  $current_subject->pivot->grade : '' }}">
                     </div>
                     <div class="d-grid gap-2">
                         <button type="submit" class="btn btn-primary d-grid gap-2 mt-4">

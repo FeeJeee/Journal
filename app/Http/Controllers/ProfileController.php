@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Group;
+use App\Services\FileService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,9 +13,14 @@ use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
+    public function __construct(
+        protected FileService $fileService,
+    ) {}
+
     /**
      * Display the user's profile form.
      */
+
     public function edit(Request $request): View
     {
         return view('profile.edit', [
@@ -30,8 +36,14 @@ class ProfileController extends Controller
     {
         $request->user()->fill($request->validated());
 
-        if ($request->user()->isDirty('email')) {
+        if ($request->user()->isDirty('email'))
+        {
             $request->user()->email_verified_at = null;
+        }
+
+        if ($request->hasFile('avatar'))
+        {
+            $this->fileService->uploadAvatar($request);
         }
 
         $request->user()->save();
@@ -50,9 +62,11 @@ class ProfileController extends Controller
 
         $user = $request->user();
 
-        Auth::logout();
+        $user->subjects()->detach();
 
         $user->delete();
+
+        Auth::logout();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();

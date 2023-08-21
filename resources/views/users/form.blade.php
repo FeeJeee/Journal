@@ -8,43 +8,54 @@
                 <div class="d-flex flex-column">
                     <div class="">
                         <label for="name" class="form-label">User name</label>
-                        <input type="text" name="name" id="name" class="form-control" placeholder="{{ isset($user) ? $user->name : '' }}">
+                        <input type="text" name="name" id="name" class="form-control" value="{{ isset($user) ? $user->name : '' }}">
                     </div>
                     <div class="">
                         <label for="surname" class="form-label">User surname</label>
-                        <input type="text" name="surname" id="surname" class="form-control" placeholder="{{ isset($user) ? $user->surname : '' }}">
+                        <input type="text" name="surname" id="surname" class="form-control" value="{{ isset($user) ? $user->surname : '' }}">
                     </div>
                     <div class="">
                         <label for="patronymic" class="form-label">User patronymic</label>
-                        <input type="text" name="patronymic" id="patronymic" class="form-control" placeholder="{{ isset($user) ? $user->patronymic : '' }}">
+                        <input type="text" name="patronymic" id="patronymic" class="form-control" value="{{ isset($user) ? $user->patronymic : '' }}">
                     </div>
-                    <label for="name" class="form-label">Group title</label>
-                    <div>
-                        <select name="group_id" id="group_id" class="form-select" aria-label="Default select example">
-                            @foreach($groups as $group)
-                                <option value="{{ $group->id }}" @selected(isset($user) && $group == $user->group)>{{ $group->title }}</option>
-                            @endforeach
-                        </select>
+
+                    <div class="">
+                        <label for="group" class="form-label">{{__('Group')}}</label>
+                        <x-select name="group_id" :options="$groups" :user="isset($user) ? $user : null" ></x-select>
                     </div>
 
                     <div class="">
                         <label for="birthdate" class="form-label">Birthdate</label>
-                        <input type="text" name="birthdate" id="birthdate" class="form-control" placeholder="{{ isset($user) ? $user->birthdate : '' }}">
+                        <input type="text" name="birthdate" id="birthdate" class="form-control" value="{{ isset($user) ? $user->birthdate : '' }}">
                     </div>
                     <div>
                         <label for="city" class="form-label">City</label>
-                        <input type="text" name="address[city]" id="address[city]" class="form-control" placeholder="{{ isset($user) ? $user->address['city'] : '' }}">
+                        <input type="text" name="address[city]" id="address[city]" class="form-control" value="{{ isset($user) ? $user->address['city'] : '' }}">
 
                         <label for="street" class="form-label">Street</label>
-                        <input type="text" name="address[street]" id="address[street]" class="form-control" placeholder="{{ isset($user) ? $user->address['street'] : '' }}">
+                        <input type="text" name="address[street]" id="address[street]" class="form-control" value="{{ isset($user) ? $user->address['street'] : '' }}">
 
                         <label for="building" class="form-label">Building</label>
-                        <input type="text" name="address[building]" id="address[building]" class="form-control"  placeholder="{{ isset($user) ? $user->address['building'] : '' }}">
-
-                        @if(!empty($user->address))
-                            {{$user->fullAddress}}
-                        @endif
-
+                        <input type="text" name="address[building]" id="address[building]" class="form-control"  value="{{ isset($user) ? $user->address['building'] : '' }}">
+                    </div>
+                    <div class="">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="text" name="email" id="email" class="form-control" value="{{ isset($user) ? $user->email : '' }}">
+                    </div>
+                    <div class="">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" name="password" id="password" class="form-control" value="{{ isset($user) ? $user->password : '' }}">
+                    </div>
+                    <div class="">
+                        <label for="password_confirmation" class="form-label">Password confirmation</label>
+                        <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" value="{{ isset($user) ? $user->password : '' }}">
+                    </div>
+                        <label for="role" class="form-label">{{ __('Role') }}</label>
+                            <select class="form-select" name="role">
+                                @foreach($user_roles as $role)
+                                    <option value="{{ $role->value }}" @selected(isset($user) && $role->value  == $user->role)>{{ $role->name }}</option>
+                                @endforeach
+                            </select>
                     </div>
                     <div class="d-grid gap-2">
                         <button type="submit" class="btn btn-primary d-grid gap-2 mt-4">

@@ -3,10 +3,12 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Enums\UserRole;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
@@ -14,8 +16,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
-
+    use HasApiTokens, HasFactory, Notifiable,SoftDeletes;
     /**
      * The attributes that are mass assignable.
      *
@@ -29,7 +30,8 @@ class User extends Authenticatable
         'surname',
         'patronymic',
         'password',
-        'email'
+        'email',
+        'role'
     ];
 
     /**
@@ -78,8 +80,6 @@ class User extends Authenticatable
             get: fn ($date) => date('d-m-Y', strtotime($date)),
         );
     }
-
-
 
     protected function fullName(): Attribute
     {
@@ -133,10 +133,31 @@ class User extends Authenticatable
         if($name = request()->get('name'))
             $query->where(DB::raw("CONCAT(name, surname, patronymic)"), 'like', '%' . $name . '%');
 
-        if($dateStar = request()->get('dateStart'))
-            $query->where('birthdate', '>=', Carbon::parse($dateStar)->format('Y-m-d'));
+        if($dateStart = request()->get('dateStart'))
+            $query->where('birthdate', '>=', Carbon::parse($dateStart)->format('Y-m-d'));
 
         if($dateEnd = request()->get('dateEnd'))
             $query->where('birthdate', '>=',  Carbon::parse($dateEnd)->format('Y-m-d'));
+    }
+
+    protected function isAdmin():Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->role === UserRole::Admin->value
+        );
+    }
+
+    protected function isTeacher():Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->role === UserRole::Teacher->value
+        );
+    }
+
+    protected function isStudent():Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->role === UserRole::Student->value
+        );
     }
 }

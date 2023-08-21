@@ -38,9 +38,13 @@ Route::middleware('auth')->group(function () {
     Route::resource('users.subjects', GradeController::class);
 
     Route::get('journals/{group}', [JournalController::class, 'show'])->name('journals.show');
+
+    Route::get('users/{user}/pdf', [UserController::class, 'toPdf'])->name('users.pdf');
+
+    Route::get('users/{user}/restore', [UserController::class, 'restore'])->withTrashed()->name('users.restore');
+
+    Route::delete('users/{user}/forceDelete', [UserController::class, 'forceDelete'])->withTrashed()->name('users.forceDelete');
+
 });
-
-
-
 
 require __DIR__.'/auth.php';

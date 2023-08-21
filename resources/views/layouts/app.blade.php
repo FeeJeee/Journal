@@ -1,30 +1,30 @@
 <html>
-<head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 
-    <title>LaravelProject</title>
-    <link rel="dns-prefetch" href="//fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
+        <title>LaravelProject</title>
+        <link rel="dns-prefetch" href="//fonts.bunny.net">
+        <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
 
-    <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/sass/app.scss', 'resources/js/app.js'])
+        <!-- Scripts -->
+    {{--    @vite(['resources/css/app.css', 'resources/sass/app.scss', 'resources/js/app.js'])--}}
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js" integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS" crossorigin="anonymous"></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 
-</head>
-<body>
-    <div class="d-flex flex-column justify-content-between min-vh-100">
-        @include('includes.header')
-        <div class="d-flex justify-content-center m-3">
-            <div class="d-flex flex-column">
-                @yield('content')
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js" integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <div class="d-flex flex-column justify-content-between min-vh-100">
+            @include('includes.header')
+            <div class="d-flex justify-content-center m-3">
+                <div class="d-flex flex-column">
+                    @yield('content')
+                </div>
             </div>
-        </div>
 
-        @include('includes.footer')
+            @include('includes.footer')
         </div>
-</body>
+    </body>
 </html>

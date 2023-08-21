@@ -7,8 +7,14 @@ use App\Http\Requests\Group\UpdateGroupRequest;
 use App\Models\Group;
 
 
+
 class GroupController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Group::class, 'group');
+    }
+
     public function index()
     {
         $groups = Group::filter()->paginate(5)->withQueryString();

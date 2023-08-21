@@ -5,9 +5,15 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Subject\StoreSubjectRequest;
 use App\Http\Requests\Subject\UpdateSubjectRequest;
 use App\Models\Subject;
+use App\Models\User;
 
 class SubjectController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Subject::class, 'subject');
+    }
+
     public function index()
     {
         $subjects = Subject::filter()->paginate(5)->withQueryString();

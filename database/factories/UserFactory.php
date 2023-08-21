@@ -28,7 +28,8 @@ class UserFactory extends Factory
                 'city' => fake()->city(),
                 'street' => fake()->streetName(),
                 'building' => fake()->buildingNumber(),
-            ]
+            ],
+            'role' => rand(0 ,2),
         ];
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Enums\UserRole;
 use App\Events\UserCreated;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\StoreUserRequest;
@@ -27,7 +28,9 @@ class RegisteredUserController extends Controller
     {
         $groups = Group::all();
 
-        return view('auth.register', compact ('groups'));
+        $user_roles = UserRole::cases();
+
+        return view('auth.register', compact ('groups', 'user_roles'));
     }
 
     /**
@@ -42,7 +45,6 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
 
         event(new UserCreated($user, $request->validated('password')));
-//        Mail::to($user)->send(new PasswordMail($request->validated('password')));
 
         Auth::login($user);
 
