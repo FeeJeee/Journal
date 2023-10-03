@@ -28,17 +28,16 @@ class EventServiceProvider extends ServiceProvider
         ],
     ];
 
+    protected $observers = [
+        User::class => [UserObserver::class],
+    ];
+
     /**
      * Register any events for your application.
      */
     public function boot(): void
     {
-        //
     }
-
-    protected $observers = [
-        User::class => [UserObserver::class],
-    ];
 
     /**
      * Determine if events and listeners should be automatically discovered.

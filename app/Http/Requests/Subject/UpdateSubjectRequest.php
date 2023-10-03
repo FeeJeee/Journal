@@ -22,7 +22,7 @@ class UpdateSubjectRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|max:50'
+            'title' => 'required|max:50',
         ];
     }
 }

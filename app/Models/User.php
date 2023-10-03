@@ -12,11 +12,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
-use Laravel\Sanctum\HasApiTokens;
+use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable,SoftDeletes;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
     /**
      * The attributes that are mass assignable.
      *
@@ -31,7 +31,7 @@ class User extends Authenticatable
         'patronymic',
         'password',
         'email',
-        'role'
+        'role',
     ];
 
     /**
@@ -66,11 +66,26 @@ class User extends Authenticatable
         return $this->belongsTo(Group::class);
     }
 
+    public function scopeFilter(Builder $query): void
+    {
+        if ($name = request()->get('name')) {
+            $query->where(DB::raw('CONCAT(name, surname, patronymic)'), 'like', '%' . $name . '%');
+        }
+
+        if ($dateStart = request()->get('dateStart')) {
+            $query->where('birthdate', '>=', Carbon::parse($dateStart)->format('Y-m-d'));
+        }
+
+        if ($dateEnd = request()->get('dateEnd')) {
+            $query->where('birthdate', '>=', Carbon::parse($dateEnd)->format('Y-m-d'));
+        }
+    }
+
     protected function userColor(): Attribute
     {
         $min_grade = $this->subjects()->min('grade');
         return Attribute::make(
-            get: fn () =>  $min_grade > 3 ? $min_grade > 4 ? 'table-success' : 'table-warning' : 'table-danger',
+            get: fn () => $min_grade > 3 ? $min_grade > 4 ? 'table-success' : 'table-warning' : 'table-danger',
         );
     }
 
@@ -84,7 +99,7 @@ class User extends Authenticatable
     protected function fullName(): Attribute
     {
         return Attribute::make(
-            get: fn ($name) => $this->name . ' ' . $this->surname . ' ' . $this->patronymic ,
+            get: fn () => $this->name . ' ' . $this->surname . ' ' . $this->patronymic,
         );
     }
 
@@ -128,36 +143,24 @@ class User extends Authenticatable
         );
     }
 
-    public function scopeFilter(Builder $query): void
-    {
-        if($name = request()->get('name'))
-            $query->where(DB::raw("CONCAT(name, surname, patronymic)"), 'like', '%' . $name . '%');
-
-        if($dateStart = request()->get('dateStart'))
-            $query->where('birthdate', '>=', Carbon::parse($dateStart)->format('Y-m-d'));
-
-        if($dateEnd = request()->get('dateEnd'))
-            $query->where('birthdate', '>=',  Carbon::parse($dateEnd)->format('Y-m-d'));
-    }
-
-    protected function isAdmin():Attribute
+    protected function isAdmin(): Attribute
     {
         return Attribute::make(
-            get: fn() => $this->role === UserRole::Admin->value
+            get: fn () => $this->role === UserRole::Admin->value
         );
     }
 
-    protected function isTeacher():Attribute
+    protected function isTeacher(): Attribute
     {
         return Attribute::make(
-            get: fn() => $this->role === UserRole::Teacher->value
+            get: fn () => $this->role === UserRole::Teacher->value
         );
     }
 
-    protected function isStudent():Attribute
+    protected function isStudent(): Attribute
     {
         return Attribute::make(
-            get: fn() => $this->role === UserRole::Student->value
+            get: fn () => $this->role === UserRole::Student->value
         );
     }
 }

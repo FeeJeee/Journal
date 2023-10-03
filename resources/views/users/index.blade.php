@@ -6,6 +6,7 @@
         'method' => 'get',
     ])
 
+{{--    {{ dd($user_roles[$user->role]->name) }}--}}
     <div class="d-flex justify-content-center">
         <div class="card text-center" style="min-width: 50rem; min-height: 34rem;">
             <div class="card-header" style="height: 4rem">
@@ -20,13 +21,14 @@
             </div>
             <div class="card-body">
                 <div class="d-flex align-items-center justify-content-center" >
-                    <table class="table text-center" >
+                    <table class="table text-center" style="min-width: 45rem;">
                         <thead>
                         <tr>
                             <th scope="col">id</th>
                             <th scope="col">avatar</th>
                             <th scope="col">Name</th>
                             <th scope="col">Birthdate</th>
+                            <th scope="col">Role</th>
                             <th scope="col"></th>
                             <th scope="col"></th>
                             <th scope="col"></th>
@@ -42,6 +44,7 @@
                                 </td>
                                 <td><a class="link-underline-light" href="{{ route('users.show',$user->id) }}">{{ $user->fullName }}</td>
                                 <td>{{ $user->birthdate }}</td>
+                                <td>{{ $user_roles[$user->role]->name }}</td>
                                 <td>
                                     @can('edit', $user)
                                         <div class="">

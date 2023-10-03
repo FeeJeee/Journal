@@ -12,7 +12,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->command('mail:sendGrades')->everyMinute();
+        $schedule->command('mail:sendGrades')->weeklyOn(1, '7:46');
     }
 
     /**

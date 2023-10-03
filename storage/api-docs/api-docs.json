@@ -1,0 +1,1099 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Doc API",
+        "version": "1.0"
+    },
+    "paths": {
+        "/api": {},
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Login",
+                "operationId": "login",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "example@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "Password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "422": {
+                        "description": "Authorization error"
+                    },
+                    "200": {
+                        "description": "Return access token"
+                    }
+                }
+            }
+        },
+        "/api/logout": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Logout",
+                "operationId": "logout",
+                "responses": {
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "200": {
+                        "description": "logout is successful"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/resetPassword": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Reset psssword",
+                "operationId": "resetPassword",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "example@example.com"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "422": {
+                        "description": "Incorrect email address"
+                    },
+                    "200": {
+                        "description": "Password send to email"
+                    }
+                }
+            }
+        },
+        "/api/users/{user}/subjects": {
+            "post": {
+                "tags": [
+                    "Grades"
+                ],
+                "summary": "Create grade",
+                "operationId": "gradesStore",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "description": "User id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "grade",
+                                    "subject_id",
+                                    "user_id"
+                                ],
+                                "properties": {
+                                    "grade": {
+                                        "type": "integer",
+                                        "format": "string",
+                                        "example": "5"
+                                    },
+                                    "subject_id": {
+                                        "type": "integer",
+                                        "format": "string",
+                                        "example": "1"
+                                    },
+                                    "user_id": {
+                                        "type": "integer",
+                                        "format": "string",
+                                        "example": "1"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Returned user grades"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Not enough rights"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/users/{user}/subjects/{subject}": {
+            "put": {
+                "tags": [
+                    "Grades"
+                ],
+                "summary": "Update grade",
+                "operationId": "gradesUpdate",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "description": "User id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "subject",
+                        "in": "path",
+                        "description": "Subject id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "grade"
+                                ],
+                                "properties": {
+                                    "grade": {
+                                        "type": "integer",
+                                        "format": "string",
+                                        "example": "5"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Returned user grades"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Not enough rights"
+                    },
+                    "404": {
+                        "description": "Grade not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/users/{user}/subjects/{subject}/": {
+            "delete": {
+                "tags": [
+                    "Grades"
+                ],
+                "summary": "Delete grade",
+                "operationId": "gradesDelete",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "description": "User id",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "subject",
+                        "in": "path",
+                        "description": "Subject id",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returned user grades"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Not enough rights"
+                    },
+                    "404": {
+                        "description": "Grade not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/groups": {
+            "get": {
+                "tags": [
+                    "Groups"
+                ],
+                "summary": "Show all groups",
+                "operationId": "groupsIndex",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "200": {
+                        "description": "Returned groups list"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Groups"
+                ],
+                "summary": "Create group",
+                "operationId": "groupsStore",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "title"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "Group"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Returned created group"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Not enough rights"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/groups/{group}": {
+            "get": {
+                "tags": [
+                    "Groups"
+                ],
+                "summary": "Show group info",
+                "operationId": "groupsShow",
+                "parameters": [
+                    {
+                        "name": "group",
+                        "in": "path",
+                        "description": "Group id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Returned group"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Group not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Groups"
+                ],
+                "summary": "Update group",
+                "operationId": "groupsUpdate",
+                "parameters": [
+                    {
+                        "name": "group",
+                        "in": "path",
+                        "description": "Group id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "title"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "Group"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Returned created group"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Not enough rights"
+                    },
+                    "404": {
+                        "description": "Group not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Groups"
+                ],
+                "summary": "Delete group",
+                "operationId": "groupsDestroy",
+                "parameters": [
+                    {
+                        "name": "group",
+                        "in": "path",
+                        "description": "Group id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Returned deleted group"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Group not found"
+                    },
+                    "403": {
+                        "description": "Not enough rights"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/subjects": {
+            "get": {
+                "tags": [
+                    "Subjects"
+                ],
+                "summary": "Show all subjects",
+                "operationId": "subjectsIndex",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "200": {
+                        "description": "Returned subjects list"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Subjects"
+                ],
+                "summary": "Create subject",
+                "operationId": "subjectsStore",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "title"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "Subject"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Returned created subject"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Not enough rights"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/subjects/{subject}": {
+            "get": {
+                "tags": [
+                    "Subjects"
+                ],
+                "summary": "Show subject info",
+                "operationId": "subjectsShow",
+                "parameters": [
+                    {
+                        "name": "subject",
+                        "in": "path",
+                        "description": "Subject id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Returned subject"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Subject not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Subjects"
+                ],
+                "summary": "Update subject",
+                "operationId": "subjectsUpdate",
+                "parameters": [
+                    {
+                        "name": "subject",
+                        "in": "path",
+                        "description": "Subject id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "title"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "Subject"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Returned created subject"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Not enough rights"
+                    },
+                    "404": {
+                        "description": "Subject not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Subjects"
+                ],
+                "summary": "Delete subject",
+                "operationId": "subjectsDestroy",
+                "parameters": [
+                    {
+                        "name": "subject",
+                        "in": "path",
+                        "description": "Subject id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Returned deleted subject"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Subject not found"
+                    },
+                    "403": {
+                        "description": "Not enough rights"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/users": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Show all users",
+                "operationId": "usersIndex",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "200": {
+                        "description": "Returned users list"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Create user",
+                "operationId": "usersStore",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "surname",
+                                    "patronymic",
+                                    "email",
+                                    "password",
+                                    "password_confirmation",
+                                    "group_id",
+                                    "birthdate",
+                                    "adress",
+                                    "role"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "Name"
+                                    },
+                                    "surname": {
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "Surname"
+                                    },
+                                    "patronymic": {
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "Patronymic"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "example@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "Password"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "Password"
+                                    },
+                                    "group_id": {
+                                        "type": "integer",
+                                        "format": "string",
+                                        "example": "1"
+                                    },
+                                    "birthdate": {
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "2000-12-12"
+                                    },
+                                    "address": {
+                                        "properties": {
+                                            "city": {
+                                                "type": "string",
+                                                "format": "string",
+                                                "example": "City"
+                                            },
+                                            "street": {
+                                                "type": "string",
+                                                "format": "string",
+                                                "example": "Street"
+                                            },
+                                            "building": {
+                                                "type": "integer",
+                                                "format": "string",
+                                                "example": "123"
+                                            }
+                                        },
+                                        "type": "object"
+                                    },
+                                    "role": {
+                                        "type": "integer",
+                                        "format": "string",
+                                        "example": "1"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Returned created user"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Not enough rights"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/users/{user}": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Show user info",
+                "operationId": "usersShow",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "description": "User id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Returned user"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Update user",
+                "operationId": "usersUpdate",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "description": "User id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "surname",
+                                    "patronymic",
+                                    "email",
+                                    "password",
+                                    "password_confirmation",
+                                    "group_id",
+                                    "birthdate",
+                                    "adress",
+                                    "role"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "Name"
+                                    },
+                                    "surname": {
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "Surname"
+                                    },
+                                    "patronymic": {
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "Patronymic"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "example@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "Password"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "Password"
+                                    },
+                                    "group_id": {
+                                        "type": "integer",
+                                        "format": "string",
+                                        "example": "1"
+                                    },
+                                    "birthdate": {
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "2000-12-12"
+                                    },
+                                    "address": {
+                                        "properties": {
+                                            "city": {
+                                                "type": "string",
+                                                "format": "string",
+                                                "example": "City"
+                                            },
+                                            "street": {
+                                                "type": "string",
+                                                "format": "string",
+                                                "example": "Street"
+                                            },
+                                            "building": {
+                                                "type": "integer",
+                                                "format": "string",
+                                                "example": "123"
+                                            }
+                                        },
+                                        "type": "object"
+                                    },
+                                    "role": {
+                                        "type": "integer",
+                                        "format": "string",
+                                        "example": "1"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Returned updated user"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "403": {
+                        "description": "Not enough rights"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Delete user",
+                "operationId": "usersDestroy",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "description": "User id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Returned deleted user"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "403": {
+                        "description": "Not enough rights"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/users/{user}/pdf": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Pdf user",
+                "operationId": "usersPdf",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "description": "User id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Returned link to user profile pdf"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearer": {
+                "type": "apiKey",
+                "description": "Enter token in format (Bearer <token>)",
+                "name": "Authorization",
+                "in": "header"
+            }
+        }
+    }
+}

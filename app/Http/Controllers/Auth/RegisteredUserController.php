@@ -6,17 +6,11 @@ use App\Enums\UserRole;
 use App\Events\UserCreated;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\StoreUserRequest;
-use App\Mail\PasswordMail;
 use App\Models\Group;
 use App\Models\User;
-use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 
 class RegisteredUserController extends Controller
@@ -30,7 +24,7 @@ class RegisteredUserController extends Controller
 
         $user_roles = UserRole::cases();
 
-        return view('auth.register', compact ('groups', 'user_roles'));
+        return view('auth.register', compact('groups', 'user_roles'));
     }
 
     /**

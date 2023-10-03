@@ -12,9 +12,8 @@ class AddingGrades
      */
     public function handle(UserCreated $event): void
     {
-        foreach (Subject::all() as $subject)
-        {
-            $event->user->subjects()->attach($subject->id, ['grade' => rand(2 ,5)]);
+        foreach (Subject::all() as $subject) {
+            $event->user->subjects()->attach($subject->id, ['grade' => rand(2, 5)]);
         }
     }
 }

@@ -6,7 +6,7 @@
             <div class="d-flex justify-content-between my-1">
                 <h5 class="ms-5 me-2 pt-1 ">{{ $user->fullName}}</h5>
                 <div class="d-flex">
-                    @can('store-update-delete-grade', $user)
+                    @can('edit-create-grade', $user)
                     <a class=" btn btn-primary me-3" href="{{ route('users.subjects.create', $user) }}" role="button">Add subject</a>
                     @endcan
                     @can('edit', $user)
@@ -35,7 +35,7 @@
                             <td>{{ $subject->pivot->grade }}</td>
                             <td>
                                 <div class="">
-                                    @can('store-update-delete-grade', $user)
+                                    @can('edit-create-grade', $user)
                                         <a class="btn btn-primary btn-sm" href="{{ route('users.subjects.edit',compact('user', 'subject')) }}" role="button">Update</a>
                                     @endcan
                                 </div>
@@ -44,7 +44,7 @@
                                 <form action="{{ route('users.subjects.destroy', compact('user', 'subject')) }}" method="post">
                                     @csrf
                                     @method('delete')
-                                    @can('store-update-delete-grade', $user)
+                                    @can('edit-create-grade', $user)
                                         <button type="submit" class="btn btn-danger btn-sm">
                                             DELETE
                                         </button>

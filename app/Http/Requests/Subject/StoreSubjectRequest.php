@@ -22,7 +22,7 @@ class StoreSubjectRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|unique:subjects|max:50'
+            'title' => 'required|unique:subjects|max:50',
         ];
     }
 }

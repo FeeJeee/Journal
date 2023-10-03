@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
 
 class Group extends Model
 {
@@ -21,7 +21,8 @@ class Group extends Model
 
     public function scopeFilter(Builder $query): void
     {
-        if ($title = request()->get('title'))
+        if ($title = request()->get('title')) {
             $query->where('title', 'like', '%' . $title . '%');
+        }
     }
 }

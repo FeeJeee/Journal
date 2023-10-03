@@ -2,10 +2,9 @@
 
 namespace App\Console\Commands;
 
-use App\Mail\GradesMail;
+use App\Jobs\SendGrades as JobsSendGrades;
 use App\Models\User;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Mail;
 
 class SendGrades extends Command
 {
@@ -21,7 +20,7 @@ class SendGrades extends Command
      *
      * @var string
      */
-    protected $description = 'Send grades to users';
+    protected $description = 'Command description';
 
     /**
      * Execute the console command.
@@ -29,12 +28,7 @@ class SendGrades extends Command
     public function handle()
     {
         foreach (User::all() as $user) {
-            {
-                if ($user->isAdmin)
-                {
-                    Mail::to($user->email)->send(new GradesMail($user));
-                }
-            }
+            dispatch(new JobsSendGrades($user))->onQueue('emails');
         }
     }
 }

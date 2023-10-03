@@ -16,12 +16,13 @@ class Subject extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class)->withPivot('grade');;
+        return $this->belongsToMany(User::class)->withPivot('grade');
     }
 
     public function scopeFilter(Builder $query): void
     {
-        if ($title = request()->get('title'))
+        if ($title = request()->get('title')) {
             $query->where('title', 'like', '%' . $title . '%');
+        }
     }
 }

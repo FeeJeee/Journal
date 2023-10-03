@@ -1,12 +1,12 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\web\GradeController;
+use App\Http\Controllers\web\GroupController;
+use App\Http\Controllers\web\JournalController;
+use App\Http\Controllers\web\ProfileController;
+use App\Http\Controllers\web\SubjectController;
+use App\Http\Controllers\web\UserController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\GroupController;
-use App\Http\Controllers\SubjectController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\GradeController;
-use App\Http\Controllers\JournalController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,11 +40,8 @@ Route::middleware('auth')->group(function () {
     Route::get('journals/{group}', [JournalController::class, 'show'])->name('journals.show');
 
     Route::get('users/{user}/pdf', [UserController::class, 'toPdf'])->name('users.pdf');
-
     Route::get('users/{user}/restore', [UserController::class, 'restore'])->withTrashed()->name('users.restore');
-
     Route::delete('users/{user}/forceDelete', [UserController::class, 'forceDelete'])->withTrashed()->name('users.forceDelete');
-
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

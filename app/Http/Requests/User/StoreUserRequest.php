@@ -31,10 +31,10 @@ class StoreUserRequest extends FormRequest
             'email' => 'required|unique:users',
             'group_id' => 'required',
             'birthdate' => 'required|date',
-            'address'    => 'required',
-            'address.city'  => 'required',
-            'address.street'  => 'required',
-            'address.building'  => 'required|numeric',
+            'address' => 'required',
+            'address.city' => 'required',
+            'address.street' => 'required',
+            'address.building' => 'required|numeric',
             'role' => [new Enum(UserRole::class)],
         ];
     }
